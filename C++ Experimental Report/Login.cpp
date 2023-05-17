@@ -32,6 +32,7 @@ void Login::DoDataExchange(CDataExchange* pDX)
 }
 
 
+
 BEGIN_MESSAGE_MAP(Login, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &Login::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &Login::OnBnClickedButton2)

@@ -12,11 +12,13 @@
 #include "CDisplayView.h"
 
 #include "CUserDlg.h"
-#include "CMazeDlg.h"
+
+//挂载何解？？？？？？？？？？？？？
+//#include "CMazeDlg.h"
 
 
 
-#define GCL_HICON           (-14)
+#define GCL_HICON           (-12)
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -161,8 +163,8 @@ LRESULT CMainFrame::OnMyChange(WPARAM wParam, LPARAM lParam)
 		break;
 	case NM_B:
 	{
-		//CUserDlg类需要加入头文件 UserDlg.h
-		Context.m_pNewViewClass = RUNTIME_CLASS(CMazeDlg);
+		//CMazeDlg类需要加入头文件 CMazeDlg.h
+		/*Context.m_pNewViewClass = RUNTIME_CLASS(CMazeDlg);
 		Context.m_pCurrentFrame = this;
 		Context.m_pLastView = (CFormView*)m_spliter.GetPane(0, 1);
 		m_spliter.DeleteView(0, 1);
@@ -170,17 +172,18 @@ LRESULT CMainFrame::OnMyChange(WPARAM wParam, LPARAM lParam)
 		CMazeDlg* pNewview = (CMazeDlg*)m_spliter.GetPane(0, 1);
 		m_spliter.RecalcLayout();
 		pNewview->OnInitialUpdate();
-		m_spliter.SetActivePane(0, 1);
+		m_spliter.SetActivePane(0, 1);*/
+		MessageBox(TEXT("敬请期待"));
 	}
 		break;
 	case NM_C:
-		MessageBox(TEXT("NM_C"));
+		MessageBox(TEXT("敬请期待"));
 		break;
 	case NM_D:
-		MessageBox(TEXT("NM_D"));
+		MessageBox(TEXT("敬请期待"));
 		break;
 	case NM_E:
-		MessageBox(TEXT("NM_E"));
+		MessageBox(TEXT("敬请期待"));
 		break;
 	default:
 		MessageBox(TEXT("error"));

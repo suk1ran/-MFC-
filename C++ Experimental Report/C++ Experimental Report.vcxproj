@@ -187,6 +187,7 @@
     <ClInclude Include="C++ Experimental ReportDoc.h" />
     <ClInclude Include="C++ Experimental ReportView.h" />
     <ClInclude Include="CDisplayView.h" />
+    <ClInclude Include="CHero.h" />
     <ClInclude Include="CMazeDlg.h" />
     <ClInclude Include="CSelectView.h" />
     <ClInclude Include="CUserDlg.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="C++ Experimental ReportDoc.cpp" />
     <ClCompile Include="C++ Experimental ReportView.cpp" />
     <ClCompile Include="CDisplayView.cpp" />
+    <ClCompile Include="CHero.cpp" />
     <ClCompile Include="CMazeDlg.cpp" />
     <ClCompile Include="CSelectView.cpp" />
     <ClCompile Include="CUserDlg.cpp" />
@@ -220,16 +222,25 @@
     <ResourceCompile Include="CExperimentalReport.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="res\CExperimentalReport.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\%IYXMYD`6ONCV)6I87C07HK.png" />
     <Image Include="res\1337537_game_go_play_pokeball_pokemon_icon~1.ico" />
     <Image Include="res\5027846_award_badge_medal_position_icon.ico" />
+    <Image Include="res\BACK.bmp" />
+    <Image Include="res\background.bmp" />
     <Image Include="res\C++ Experimental Report.ico" />
     <Image Include="res\C++ Experimental ReportDoc.ico" />
     <Image Include="res\firstone.ico" />
+    <Image Include="res\hero.bmp" />
     <Image Include="res\icon1.ico" />
+    <Image Include="res\icon2.ico" />
+    <Image Include="res\Point.bmp" />
     <Image Include="res\pokemon.ico" />
+    <Image Include="res\SHOWWAY.bmp" />
+    <Image Include="res\wall.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

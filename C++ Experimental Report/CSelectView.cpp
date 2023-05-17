@@ -72,7 +72,7 @@ void CSelectView::OnInitialUpdate()
 
 	//树控件设置节点 CTreeCtrl::SetImageList
 	m_treeCtrl->InsertItem(TEXT("个人信息"), 0, 0, NULL);
-	m_treeCtrl->InsertItem(TEXT("迷宫生成器"), 0, 0, NULL);
+	m_treeCtrl->InsertItem(TEXT("麻了"), 0, 0, NULL);
 	m_treeCtrl->InsertItem(TEXT("TODO"), 0, 0, NULL);
 	m_treeCtrl->InsertItem(TEXT("TODO"), 0, 0, NULL);
 	m_treeCtrl->InsertItem(TEXT("TODO"), 0, 0, NULL);
@@ -107,7 +107,7 @@ void CSelectView::OnTvnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 		//(LPAPAM)0 指定了附加的消息信息，此参数这里没有意义
 		::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), NM_A, (WPARAM)NM_A, (LPARAM)0); //双冒号代表的是作用域，若加上双冒号指全局作用域。
 	}
-	else if (str == TEXT("迷宫生成器"))
+	else if (str == TEXT("麻了"))
 	{
 		::PostMessage(AfxGetMainWnd()->GetSafeHwnd(), NM_B, (WPARAM)NM_B, (LPARAM)0);
 	}

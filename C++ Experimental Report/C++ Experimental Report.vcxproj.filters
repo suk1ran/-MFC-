@@ -57,6 +57,9 @@
     <ClInclude Include="CMazeDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CHero.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C++ Experimental Report.cpp">
@@ -92,6 +95,9 @@
     <ClCompile Include="CMazeDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CHero.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CExperimentalReport.rc">
@@ -102,6 +108,7 @@
     <None Include="res\CExperimentalReport.rc2">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\C++ Experimental ReportDoc.ico">
@@ -123,6 +130,30 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\1337537_game_go_play_pokeball_pokemon_icon~1.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\background.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\hero.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\wall.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\icon2.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\%IYXMYD`6ONCV)6I87C07HK.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\BACK.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Point.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\SHOWWAY.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

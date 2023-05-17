@@ -18,6 +18,9 @@
 #endif
 
 
+
+
+
 // CCExperimentalReportView
 
 IMPLEMENT_DYNCREATE(CCExperimentalReportView, CView)
@@ -27,6 +30,8 @@ BEGIN_MESSAGE_MAP(CCExperimentalReportView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+//	ON_COMMAND(IDM_MAZE, &CCExperimentalReportView::OnMaze)
+//ON_COMMAND(IDM_MAZE_DLG, &CCExperimentalReportView::OnMazeDlg)
 END_MESSAGE_MAP()
 
 // CCExperimentalReportView 构造/析构
@@ -103,3 +108,10 @@ CCExperimentalReportDoc* CCExperimentalReportView::GetDocument() const // 非调
 
 
 // CCExperimentalReportView 消息处理程序
+
+
+
+
+
+
+

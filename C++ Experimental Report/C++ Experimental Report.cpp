@@ -10,6 +10,9 @@
 #include "MainFrm.h"
 #include "Login.h"
 
+//迷宫生成器
+#include "CMazeDlg.h"
+
 #include "C++ Experimental ReportDoc.h"
 #include "C++ Experimental ReportView.h"
 
@@ -27,6 +30,8 @@ BEGIN_MESSAGE_MAP(CCExperimentalReportApp, CWinApp)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
 	// 标准打印设置命令
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinApp::OnFilePrintSetup)
+	//ON_COMMAND(IDM_MAZE_DLG, &CWinApp::OnMazeDlg)
+	ON_COMMAND(IDM_MAZE_DLG, &CCExperimentalReportApp::OnMazeDlg)
 END_MESSAGE_MAP()
 
 
@@ -191,3 +196,11 @@ void CCExperimentalReportApp::OnAppAbout()
 
 
 
+
+
+void CCExperimentalReportApp::OnMazeDlg()
+{
+	// TODO: 在此添加命令处理程序代码
+	CMazeDlg dlg;
+	dlg.DoModal();
+}

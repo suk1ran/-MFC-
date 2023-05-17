@@ -47,7 +47,8 @@ BOOL CCExperimentalReportDoc::OnNewDocument()
 	// (SDI 文档将重用该文档)
 
 	//设置左标题
-	SetTitle(TEXT("兴趣使然的MFC多功能系统"));
+	//一堆功能不会实现的MFC多功能系统
+	SetTitle(TEXT("To brighten your cloudy days"));
 
 	return TRUE;
 }
