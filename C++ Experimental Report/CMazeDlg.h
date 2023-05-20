@@ -41,33 +41,57 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	
-	void PrimGenerate();
 	
-	void DfsSolve();
+	void PrimGenerate();
+
+	void PrimGenerate(int random_point);
+
+	int Find(int t);
+	void Union(int a, int b);
+	bool IsSame(int a, int b);
+	void UnionFindGenerate();
+
+	void DfsSolve(int x, int y);
+
+	bool isValidMove(int x, int y);
+	void movePlayer(int x, int y);
+
+	bool SaveMazeData();
+	void ShowMazeData();
 
 private:
 	CStatic m_MazePicCtrl;
-
-
-
-	CComboBox Box;
-	CFont m_showFont1;
-	CFont m_showFont2;
-	CFont m_showFont3;
 	CBrush m_brush[5];
-	
-	CHero m_hero;
 	CPen pen1;
-	int speed = 150; // 设置速度
-	int score = 0;
-	bool INIT = true;
-	bool START = false;
-	bool DEAD = false;
+	CHero m_hero;
+	
+	
+	//单元格队列，包括X , Y
+	//std::vector<std::pair<int, int>> Block;
 
+	
 
-	static const int L = 40;//TODO 可自定义
+	bool randGenerate = false;
+	std::pair<int, int> randPoint;
+	static const int L = 41;//TODO 可自定义
 	CRect m_map[L][L];
 
+	int pre[L * L + L];//存储每个结点的前驱结点 
+	int rank[L * L + L];//树的高度 
+
+	int m_x;
+	int m_y;
+	int BOOK[L][L]; //标记可走路线, 用于迷宫求解,为1时可走
+	int step;
+	int min_step;
+
+	int m_second;           // 秒数
+	int m_minute;           // 分钟数
+	BOOL m_timerFlag;    // 标记计时器是否在计时
+
+
+	const int dx[4] = { -1, 1, 0, 0 };
+	const int dy[4] = { 0, 0, -1, 1 };
 
 
 public:
@@ -75,9 +99,15 @@ public:
 	afx_msg void OnBnClickedButtonStart();
 	afx_msg void OnBnClickedButtonQuit();
 	afx_msg void OnBnClickedButtonShow();
-	afx_msg void OnBnClickedButtonSet();
 	afx_msg void OnEnChangeEditCols();
 	afx_msg void OnEnChangeEditRows();
 	afx_msg void OnStnClickedMazepic();
+	afx_msg void OnBnClickedButtonIds();
+	afx_msg void OnBnClickedButtonStart3();
+	afx_msg void OnBnClickedButtonSave();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedButtonLook();
 };
 

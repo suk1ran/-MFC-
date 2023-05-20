@@ -16,7 +16,6 @@
 #define IDB_PNG1                        330
 #define IDB_BACKGROUND                  331
 #define IDB_POINT                       332
-#define IDB_BITMAP1                     333
 #define IDB_SHOWWAY                     333
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
@@ -29,10 +28,13 @@
 #define IDC_MAZEPIC                     1009
 #define IDC_NEWGAME                     1010
 #define IDC_BUTTON_START                1010
-#define IDC_BUTTON_SET                  1011
 #define IDC_BUTTON_SHOW                 1012
-#define IDC_EDIT_ROWS                   1013
-#define IDC_EDIT_COLS                   1014
+#define IDC_EDIT_STEPS                  1013
+#define IDC_BUTTON_START2               1016
+#define IDC_BUTTON_START3               1017
+#define IDC_BUTTON_SAVE                 1018
+#define IDC_EDIT_COUNTTIME              1019
+#define IDC_BUTTON_LOOK                 1020
 #define ID_32771                        32771
 #define ID_MAZE                         32772
 #define IDM_MAZE                        32773
@@ -46,7 +48,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        334
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1015
+#define _APS_NEXT_CONTROL_VALUE         1021
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
