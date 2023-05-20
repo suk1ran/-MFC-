@@ -36,11 +36,6 @@ using std::ios;
 IMPLEMENT_DYNAMIC(CMazeDlg, CDialogEx)
 
 
-
-
-
-
-
 CMazeDlg::CMazeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MAZE, pParent)
 {

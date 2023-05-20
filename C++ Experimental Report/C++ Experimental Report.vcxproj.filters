@@ -57,9 +57,6 @@
     <ClInclude Include="CMazeDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CHero.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C++ Experimental Report.cpp">
@@ -93,9 +90,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CMazeDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CHero.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

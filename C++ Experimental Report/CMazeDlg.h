@@ -7,10 +7,6 @@
 #include <queue>
 
 #include "afxtempl.h"
-
-#include "CHero.h"
-
-
 #include <vector>
 
 
@@ -63,13 +59,6 @@ private:
 	CStatic m_MazePicCtrl;
 	CBrush m_brush[5];
 	CPen pen1;
-	CHero m_hero;
-	
-	
-	//单元格队列，包括X , Y
-	//std::vector<std::pair<int, int>> Block;
-
-	
 
 	bool randGenerate = false;
 	std::pair<int, int> randPoint;

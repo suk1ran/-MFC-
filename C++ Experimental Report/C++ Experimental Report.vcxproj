@@ -187,7 +187,6 @@
     <ClInclude Include="C++ Experimental ReportDoc.h" />
     <ClInclude Include="C++ Experimental ReportView.h" />
     <ClInclude Include="CDisplayView.h" />
-    <ClInclude Include="CHero.h" />
     <ClInclude Include="CMazeDlg.h" />
     <ClInclude Include="CSelectView.h" />
     <ClInclude Include="CUserDlg.h" />
@@ -204,7 +203,6 @@
     <ClCompile Include="C++ Experimental ReportDoc.cpp" />
     <ClCompile Include="C++ Experimental ReportView.cpp" />
     <ClCompile Include="CDisplayView.cpp" />
-    <ClCompile Include="CHero.cpp" />
     <ClCompile Include="CMazeDlg.cpp" />
     <ClCompile Include="CSelectView.cpp" />
     <ClCompile Include="CUserDlg.cpp" />
