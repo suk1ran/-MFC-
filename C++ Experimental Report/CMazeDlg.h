@@ -37,7 +37,6 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	
-	
 	void PrimGenerate();
 
 	void PrimGenerate(int random_point);
@@ -57,16 +56,19 @@ public:
 
 private:
 	CStatic m_MazePicCtrl;
-	CBrush m_brush[5];
+	CBrush m_brush[10];
 	CPen pen1;
 
 	bool randGenerate = false;
+	std::pair<int, int> randStart;
 	std::pair<int, int> randPoint;
 	static const int L = 41;//TODO 可自定义
 	CRect m_map[L][L];
 
 	int pre[L * L + L];//存储每个结点的前驱结点 
 	int rank[L * L + L];//树的高度 
+
+	int Maze[L][L] = { 0 };//0为墙，1为路,-1为边界（无法破坏）
 
 	int m_x;
 	int m_y;
@@ -77,11 +79,6 @@ private:
 	int m_second;           // 秒数
 	int m_minute;           // 分钟数
 	BOOL m_timerFlag;    // 标记计时器是否在计时
-
-
-	const int dx[4] = { -1, 1, 0, 0 };
-	const int dy[4] = { 0, 0, -1, 1 };
-
 
 public:
 

@@ -29,6 +29,7 @@ using std::setw;
 using std::setfill;
 using std::ofstream;
 using std::ios;
+using std::vector;
 
 
 // CMazeDlg 对话框
@@ -78,27 +79,31 @@ BOOL CMazeDlg::OnInitDialog()
 	CRect rect;
 	(this->GetDlgItem(IDC_MAZEPIC))->GetWindowRect(&rect); // 获取控件相对于屏幕的位置
 	ScreenToClient(&rect); // 转化为相对于客户区的位置
-	GetDlgItem(IDC_MAZEPIC)->MoveWindow(rect.left, rect.top - 30, 820, 820, false);
-
+	GetDlgItem(IDC_MAZEPIC)->MoveWindow(rect.left, rect.top - 35, 820, 820, false);
 
 
 	// 画刷初始化
-	CBitmap  herobmp, wallbmp, bgbmp, ptbmp, swbmp;
+	CBitmap  herobmp, wallbmp, bgbmp, gamebmp, fdbmp, mariobmp, coinbmp, bdtree;
 	bgbmp.LoadBitmapW(IDB_BACKGROUND);
 	wallbmp.LoadBitmapW(IDB_WALL);
 	herobmp.LoadBitmapW(IDB_HERO);
-	ptbmp.LoadBitmapW(IDB_POINT);
-	swbmp.LoadBitmapW(IDB_SHOWWAY);
-	m_brush[0].CreatePatternBrush(&ptbmp);//终点
+	gamebmp.LoadBitmapW(IDB_UNSTART);
+	fdbmp.LoadBitmapW(IDB_FINDWAY);
+	mariobmp.LoadBitmapW(IDB_MARIO);
+	coinbmp.LoadBitmapW(IDB_COIN);
+	bdtree.LoadBitmapW(IDB_BIRDTREE);
+	m_brush[0].CreatePatternBrush(&gamebmp);//初始页面
 	m_brush[1].CreatePatternBrush(&herobmp);//人物
 	m_brush[2].CreatePatternBrush(&wallbmp);//墙体
 	m_brush[3].CreatePatternBrush(&bgbmp);//背景
-	m_brush[4].CreatePatternBrush(&swbmp);//路径
+	m_brush[4].CreatePatternBrush(&fdbmp);//路径
+	m_brush[5].CreatePatternBrush(&mariobmp);//马里奥
+	m_brush[6].CreatePatternBrush(&coinbmp);//金币
+	m_brush[7].CreatePatternBrush(&bdtree);//大树
 
 	step = 0;
 	min_step = 999;
 	GetDlgItem(IDC_EDIT_STEPS)->SetWindowTextW(_T("0"));
-
 
 
 	m_second = 0;           // 初始化秒数
@@ -107,7 +112,8 @@ BOOL CMazeDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_COUNTTIME)->SetWindowTextW(_T("00:00")); // 在Edit Control控件中显示时间
 
 
-
+	//随机数种子
+	srand((unsigned)time(NULL));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
@@ -125,40 +131,37 @@ void CMazeDlg::OnPaint()
 	CDC* pClientDC = GetDC();
 	(this->GetDlgItem(IDC_MAZEPIC))->GetWindowRect(&rect); // 获取控件相对于屏幕的位
 	ScreenToClient(rect); // 转化为相对于客户区的位置
-	CPen pen(PS_SOLID, 6, RGB(255, 160, 122));
-	CPen pen2(PS_SOLID, 18, RGB(255, 160, 122));
-	CPen* oldPen = pClientDC->SelectObject(&pen2);//描绘边缘
+	CPen pen(PS_SOLID, 5, RGB(34, 139, 34));
+	//CPen pen2(PS_SOLID, 5, RGB(255, 160, 122));
+	//CPen* oldPen = pClientDC->SelectObject(&pen2);//描绘边缘
 	pClientDC->Rectangle(rect);
-	rect.left -= 5;
-	rect.right += 5;
-	rect.top -= 5;
-	rect.bottom += 5;
+	rect.left -= 3;
+	rect.right += 3;
+	rect.top -= 3;
+	rect.bottom += 3;
 	pClientDC->SelectObject(&pen);//描绘外围框
 	pClientDC->Rectangle(rect);
 	pen.DeleteObject();
-	pen2.DeleteObject();
+	//pen2.DeleteObject();
 	ReleaseDC(pClientDC);
 
 	
-
-
 	// 游戏区
 	CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
 	// 迷宫初始化
-	CBrush* poldBrs = pdc->SelectObject(&m_brush[3]); 
-	for (int i = 0; i < 41; i++)
-	{
-		for (int j = 0; j < 41; j++)
-		{
-			m_map[i][j].left = 0 + j * 20;
-			m_map[i][j].right = 20 + j * 20;
-			m_map[i][j].top = 0 + i * 20;
-			m_map[i][j].bottom = 20 + i * 20;
+	CBrush* poldBrs = pdc->SelectObject(&m_brush[0]); 
+	//for (int i = 0; i < L; i++)
+	//{
+		//for (int j = 0; j < L; j++)
+		//{
+			m_map[1][1].left = 0 ;
+			m_map[1][1].right = 820;
+			m_map[1][1].top = 0 ;
+			m_map[1][1].bottom = 820;
 			//pdc->SelectObject(m_brush[3]);
-			pdc->Rectangle(m_map[i][j]);
-	
-		}
-	}
+			pdc->FillRect(m_map[1][1], &m_brush[0]);
+		//}
+	//}
 	pdc->SelectObject(&poldBrs);
 	poldBrs->DeleteObject();
 	ReleaseDC(pdc);
@@ -182,81 +185,91 @@ void CMazeDlg::PrimGenerate()
 	KillTimer(1);
 	m_timerFlag = FALSE;
 	
-	int Maze[L][L] = { 0 };//0为墙，1为路,-1为边界（无法破坏）
+	// 清空迷宫
+	for (int i = 0; i < L; i++) {
+		for (int j = 0; j < L; j++) {
+			Maze[i][j] = 0;
+		}
+	}
 
-	//最外围设置为边界
-	for (int i = 0; i < L; i++)
-	{
+	// 把整个迷宫内部都包围起来
+	for (int i = 0; i < L; i++) {
 		Maze[i][0] = -1;
 		Maze[0][i] = -1;
 		Maze[L - 1][i] = -1;
 		Maze[i][L - 1] = -1;
 	}
 
-	//墙队列，包括X , Y
-	std::vector<std::pair<int, int>> Wall;
+	// 随机选择一个点作为起点
+	int x = 2 * (rand() % ((L / 2) - 1)) + 1;
+	int y = 2 * (rand() % ((L / 2) - 1)) + 1;
+	
 
-
-
-	//设置迷宫入口
-	Maze[0][1] = 1;
+	// 设置迷宫入口
+	Maze[x][y] = 1;
 	m_x = 0;
 	m_y = 1;
 
-	//设置迷宫出口
-	//Maze[L - 1][L - 2] = 1;
+	// 设置迷宫出口
 	randPoint.first = L - 2;
 	randPoint.second = L - 2;
-	
 
-	//把起点的邻居放入墙队列
-	Wall.emplace_back(1, 1);
+	// 墙队列，包括X , Y
+	std::vector<std::pair<int, int>> Wall;
 
+	// 把起点四周的墙放入队列
+	for (int i = x - 1; i <= x + 1; i++) {
+		for (int j = y - 1; j <= y + 1; j++) {
+			if (i == x || j == y) {
+				Wall.emplace_back(i, j);
+			}
+		}
+	}
 
-
-	//当墙队列为空时结束循环
-	while (!Wall.empty())
-	{
-		//在墙队列中随机取一点
+	while (!Wall.empty()) {
+		// 随机选择一个墙
 		int idx = rand() % Wall.size();
 		int x = Wall[idx].first;
 		int y = Wall[idx].second;
 
-		//判断上下左右四个方向是否为路
+		// 统计周围已经打开的墙的数量
 		int count = 0;
-		for (int i = x - 1; i < x + 2; i++) {
-			for (int j = y - 1; j < y + 2; j++) {
-				if (abs(x - i) + abs(y - j) == 1 && Maze[i][j] > 0) {
-					++count;
-				}
-			}
-		}
-
-		if (count <= 1)
-		{
-			Maze[x][y] = 1;
-			//在墙队列中插入新的墙
-			for (int i = x - 1; i < x + 2; i++) {
-				for (int j = y - 1; j < y + 2; j++) {
-					if (abs(x - i) + abs(y - j) == 1 && Maze[i][j] == 0) {
-						Wall.emplace_back(i, j);
+		for (int i = x - 1; i <= x + 1; i++) {
+			for (int j = y - 1; j <= y + 1; j++) {
+				if (i == x || j == y) {
+					if (Maze[i][j] == 1) {
+						count++;
 					}
 				}
 			}
 		}
 
-		//删除当前墙
-		Wall.erase(Wall.begin() + idx);
+		if (count == 1) {
+			// 打开当前墙
+			Maze[x][y] = 1;
 
+			// 把当前墙相邻的墙加入队列
+			for (int i = x - 1; i <= x + 1; i++) {
+				for (int j = y - 1; j <= y + 1; j++) {
+					if (i == x || j == y) {
+						if (Maze[i][j] == 0) {
+							Wall.emplace_back(i, j);
+						}
+					}
+				}
+			}
+		}
+
+		// 从队列中删除当前墙
+		Wall.erase(Wall.begin() + idx);
 	}
 
 
-	if (Maze[L - 2][L - 2] != 1)//确保迷宫有解
+	if (Maze[L - 2][L - 2] != 1 || Maze[1][1] != 1)//确保迷宫有解
 	{
 		PrimGenerate();
 		return;
 	}
-
 
 
 	//标记可走路线,用于迷宫求解
@@ -267,8 +280,6 @@ void CMazeDlg::PrimGenerate()
 			BOOK[i][j] = Maze[i][j];
 		}
 	}
-	
-	
 	
 
 	// 游戏区
@@ -284,13 +295,12 @@ void CMazeDlg::PrimGenerate()
 			m_map[i][j].top = 0 + i * 20;
 			m_map[i][j].bottom = 20 + i * 20;
 			//pdc->SelectObject(m_brush[3]);
-			pdc->Rectangle(m_map[i][j]);
+			pdc->FillRect(m_map[i][j], &m_brush[3]);
 			//pdc->SelectObject(&poldBrs);
 		}
 	}
 	pdc->SelectObject(&poldBrs);
 	//ReleaseDC(pdc);
-
 
 
 	//画迷宫
@@ -313,7 +323,7 @@ void CMazeDlg::PrimGenerate()
 
 
 				//pdc->SelectObject(m_brush[2]);
-				pdc->Rectangle(m_map[i][j]);
+				pdc->FillRect(m_map[i][j],&m_brush[7]);
 				//pdc->SelectObject(&poldBrs);
 				//ReleaseDC(pdc);
 				
@@ -329,13 +339,13 @@ void CMazeDlg::PrimGenerate()
 
 
 	//画人物
-	pdc->SelectObject(&m_brush[1]);
-	pdc->Rectangle(m_map[0][1]);
+	pdc->SelectObject(&m_brush[5]);
+	pdc->FillRect(m_map[0][1], &m_brush[5]);
 	pdc->SelectObject(&poldBrs);
 
 	//画终点
-	pdc->SelectObject(&m_brush[0]);
-	pdc->Rectangle(m_map[L - 1][L - 2]);
+	pdc->SelectObject(&m_brush[6]);
+	pdc->FillRect(m_map[L - 2][L - 2], &m_brush[6]);
 	pdc->SelectObject(&poldBrs);
 
 	poldBrs->DeleteObject();
@@ -362,7 +372,13 @@ void CMazeDlg::PrimGenerate(int random_point)
 	m_timerFlag = FALSE;
 
 
-	int Maze[L][L] = { 0 };//0为墙，1为路,-1为边界（无法破坏）
+	for (int i = 0; i < L; i++)
+	{
+		for (int j = 0; j < L; j++)
+		{
+			Maze[i][j] = 0;
+		}
+	}
 
 	//最外围设置为边界
 	for (int i = 0; i < L; i++)
@@ -389,8 +405,6 @@ void CMazeDlg::PrimGenerate(int random_point)
 	//把起点的邻居放入墙队列
 	Wall.emplace_back(1, 1);
 
-
-
 	//当墙队列为空时结束循环
 	while (!Wall.empty())
 	{
@@ -399,25 +413,29 @@ void CMazeDlg::PrimGenerate(int random_point)
 		int x = Wall[idx].first;
 		int y = Wall[idx].second;
 
-		//判断上下左右四个方向是否为路
+		// 统计周围已经打开的墙的数量
 		int count = 0;
-		for (int i = x - 1; i < x + 2; i++) {
-			for (int j = y - 1; j < y + 2; j++) {
-				if (abs(x - i) + abs(y - j) == 1 && Maze[i][j] > 0) {
-					++count;
+		for (int i = x - 1; i <= x + 1; i++) {
+			for (int j = y - 1; j <= y + 1; j++) {
+				if (i == x || j == y) {
+					if (Maze[i][j] == 1) {
+						count++;
+					}
 				}
 			}
 		}
 
-		if (count <= 1)
-		{
+		if (count == 1) {
+			// 打开当前墙
 			Maze[x][y] = 1;
 			Point.emplace_back(x, y);
-			//在墙队列中插入新的墙
-			for (int i = x - 1; i < x + 2; i++) {
-				for (int j = y - 1; j < y + 2; j++) {
-					if (abs(x - i) + abs(y - j) == 1 && Maze[i][j] == 0) {
-						Wall.emplace_back(i, j);
+			// 把当前墙相邻的墙加入队列
+			for (int i = x - 1; i <= x + 1; i++) {
+				for (int j = y - 1; j <= y + 1; j++) {
+					if (i == x || j == y) {
+						if (Maze[i][j] == 0) {
+							Wall.emplace_back(i, j);
+						}
 					}
 				}
 			}
@@ -460,7 +478,7 @@ void CMazeDlg::PrimGenerate(int random_point)
 			m_map[i][j].top = 0 + i * 20;
 			m_map[i][j].bottom = 20 + i * 20;
 			//pdc->SelectObject(m_brush[3]);
-			pdc->Rectangle(m_map[i][j]);
+			pdc->FillRect(m_map[i][j], &m_brush[3]);
 			//pdc->SelectObject(&poldBrs);
 		}
 	}
@@ -470,7 +488,7 @@ void CMazeDlg::PrimGenerate(int random_point)
 
 
 	//画迷宫
-	pdc->SelectObject(m_brush[2]);
+	pdc->SelectObject(m_brush[7]);
 	for (int i = 0; i < L; i++)
 	{
 		for (int j = 0; j < L; j++)
@@ -489,7 +507,7 @@ void CMazeDlg::PrimGenerate(int random_point)
 
 
 				//pdc->SelectObject(m_brush[2]);
-				pdc->Rectangle(m_map[i][j]);
+				pdc->FillRect(m_map[i][j],&m_brush[7]);
 				//pdc->SelectObject(&poldBrs);
 				//ReleaseDC(pdc);
 
@@ -505,13 +523,13 @@ void CMazeDlg::PrimGenerate(int random_point)
 
 
 	//画人物
-	pdc->SelectObject(&m_brush[1]);
-	pdc->Rectangle(m_map[0][1]);
+	pdc->SelectObject(&m_brush[5]);
+	pdc->FillRect(m_map[0][1], &m_brush[5]);
 	pdc->SelectObject(&poldBrs);
 
 	//画终点
-	pdc->SelectObject(&m_brush[0]);
-	pdc->Rectangle(m_map[p_x][p_y]);
+	pdc->SelectObject(&m_brush[6]);
+	pdc->FillRect(m_map[p_x][p_y], &m_brush[6]);
 	pdc->SelectObject(&poldBrs);
 
 	poldBrs->DeleteObject();
@@ -805,15 +823,15 @@ void CMazeDlg::DfsSolve(int x, int y)
 		}
 		ReleaseDC(pDC);
 		//如果是随机终点需要绘制完路径后重绘终点
-		if (randGenerate == true)
-		{
+		//if (randGenerate == true)
+		//{
 			CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
-			CBrush* poldBrs = pdc->SelectObject(&m_brush[0]);
-			pdc->Rectangle(m_map[randPoint.first][randPoint.second]);
+			CBrush* poldBrs = pdc->SelectObject(&m_brush[6]);
+			pdc->FillRect(m_map[randPoint.first][randPoint.second], &m_brush[6]);
 			pdc->SelectObject(&poldBrs);
 			poldBrs->DeleteObject();
 			ReleaseDC(pdc);
-		}
+		//}
 
 		// 找到出口
 		MessageBox(_T("恭喜您，成功找到出口！"), _T("迷宫寻路成功"), MB_OK);
@@ -862,10 +880,10 @@ void CMazeDlg::movePlayer(int x, int y)//传入下一步的坐标
 {
 	CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
 	CBrush* poldBrs = pdc->SelectObject(&m_brush[3]);
-	pdc->Rectangle(m_map[m_x][m_y]);
+	pdc->FillRect(m_map[m_x][m_y], &m_brush[3]);
 	pdc->SelectObject(&poldBrs);
-	pdc->SelectObject(&m_brush[1]);
-	pdc->Rectangle(m_map[x][y]);
+	pdc->SelectObject(&m_brush[5]);
+	pdc->FillRect(m_map[x][y], &m_brush[5]);
 	pdc->SelectObject(&poldBrs);
 	m_x = x;
 	m_y = y;
@@ -1019,7 +1037,7 @@ void CMazeDlg::OnBnClickedButtonIds()
 void CMazeDlg::OnBnClickedButtonStart3()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	UnionFindGenerate();
+	//UnionFindGenerate();
 }
 
 
@@ -1097,6 +1115,10 @@ BOOL CMazeDlg::PreTranslateMessage(MSG* pMsg)
 
 	//SendMessage(pMsg->message, pMsg->wParam);
 
+
+
+
+
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)
@@ -1160,5 +1182,4 @@ void CMazeDlg::OnTimer(UINT_PTR nIDEvent)
 
 	CDialogEx::OnTimer(nIDEvent);
 }
-
 

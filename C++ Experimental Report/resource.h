@@ -4,6 +4,7 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
+#define IDI_ICON_STRAWBERRY             125
 #define IDR_MAINFRAME                   128
 #define IDR_CExperimentalReportTYPE     130
 #define IDD_LOGIN                       310
@@ -16,7 +17,24 @@
 #define IDB_PNG1                        330
 #define IDB_BACKGROUND                  331
 #define IDB_POINT                       332
+#define IDB_UI                          332
 #define IDB_SHOWWAY                     333
+#define IDI_ICON_                       335
+#define IDB_BIRD                        336
+#define IDB_COIN                        337
+#define IDB_MARIO                       338
+#define IDB_PIG                         339
+#define IDB_MBLOCK                      340
+#define IDB_TREE1                       341
+#define IDB_TREE2                       342
+#define IDB_TREE3                       343
+#define IDB_TREE4                       344
+#define IDB_BITMAP1                     345
+#define IDB_BIRDTREE                    345
+#define IDB_COLUD                       348
+#define IDB_FINDWAY                     351
+#define IDB_BITMAP2                     353
+#define IDB_UNSTART                     353
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_BUTTON1                     1002
@@ -46,7 +64,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        334
+#define _APS_NEXT_RESOURCE_VALUE        354
 #define _APS_NEXT_COMMAND_VALUE         32777
 #define _APS_NEXT_CONTROL_VALUE         1021
 #define _APS_NEXT_SYMED_VALUE           310

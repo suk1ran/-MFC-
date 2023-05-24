@@ -13,10 +13,6 @@
 
 #include "CUserDlg.h"
 
-//挂载何解？？？？？？？？？？？？？
-//#include "CMazeDlg.h"
-
-
 
 #define GCL_HICON           (-12)
 
@@ -77,12 +73,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
 	//设置图标
-	//HICON icon = AfxGetApp()->LoadIconW(IDI_ICON_GOAT);
-    //SetClassLong(m_hWnd, GCL_HICON, (LONG)AfxGetApp()->LoadIconW(IDI_ICON_GOAT));
+	//HICON icon = AfxGetApp()->LoadIconW(IDI_ICON_STRAWBERRY);
+	//m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_STRAWBERRY);
+	//SetClassLong(m_hWnd, GCL_HICON, (LONG)AfxGetApp()->LoadIconW(IDI_ICON_STRAWBERRY));
 	
+	//更改应用程序图标
+	HICON ico = AfxGetApp()->LoadIcon(IDI_ICON_STRAWBERRY);
+	SetIcon(ico, TRUE);//设置大图标
+	SetIcon(ico, FALSE);//设置小图标
 	
 	//设置右标题
-	SetTitle(TEXT("v1.0.0-beta.1 （Powered By he277）"));
+	SetTitle(TEXT("v1.1.0-beta.1 （Powered by he277）"));
 
 	//设置窗口大小
 	MoveWindow(0,0,1920,1080);

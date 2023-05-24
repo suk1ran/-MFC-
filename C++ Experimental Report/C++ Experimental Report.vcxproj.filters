@@ -150,5 +150,53 @@
     <Image Include="res\SHOWWAY.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="res\2998118_fruit_healthy_strawberry_icon.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Angry Bird~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\coin~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\mario~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\pig~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\questionblock~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\tree1~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\tree2~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\tree3~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\tree4~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\birdtree~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\bitmap2.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\cloud~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\bitmap3.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\findway~1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Snipaste_2023-05-24_14-47-10.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>
