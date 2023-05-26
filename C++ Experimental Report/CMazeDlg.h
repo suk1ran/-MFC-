@@ -28,10 +28,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
-	
-	
-
-
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
@@ -68,7 +64,7 @@ private:
 	int pre[L * L + L];//存储每个结点的前驱结点 
 	int rank[L * L + L];//树的高度 
 
-	int Maze[L][L] = { 0 };//0为墙，1为路,-1为边界（无法破坏）
+	int Maze[L][L];//0为墙，1为路,-1为边界（无法破坏）
 
 	int m_x;
 	int m_y;

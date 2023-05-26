@@ -11,7 +11,6 @@
 #include <queue>
 #include <random>
 
-
 #include <vector>
 #include <set>
 #include <stack>
@@ -125,15 +124,13 @@ void CMazeDlg::OnPaint()
 	CPaintDC dc(this); // device context for painting
 	// TODO: 在此处添加消息处理程序代码
 	// 不为绘图消息调用 CDialogEx::OnPaint()
-	
-    
+
 	CRect rect;
 	CDC* pClientDC = GetDC();
 	(this->GetDlgItem(IDC_MAZEPIC))->GetWindowRect(&rect); // 获取控件相对于屏幕的位
 	ScreenToClient(rect); // 转化为相对于客户区的位置
 	CPen pen(PS_SOLID, 5, RGB(34, 139, 34));
-	//CPen pen2(PS_SOLID, 5, RGB(255, 160, 122));
-	//CPen* oldPen = pClientDC->SelectObject(&pen2);//描绘边缘
+
 	pClientDC->Rectangle(rect);
 	rect.left -= 3;
 	rect.right += 3;
@@ -142,26 +139,20 @@ void CMazeDlg::OnPaint()
 	pClientDC->SelectObject(&pen);//描绘外围框
 	pClientDC->Rectangle(rect);
 	pen.DeleteObject();
-	//pen2.DeleteObject();
 	ReleaseDC(pClientDC);
 
-	
-	// 游戏区
+
+	// 迷宫界面初始化
 	CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
-	// 迷宫初始化
-	CBrush* poldBrs = pdc->SelectObject(&m_brush[0]); 
-	//for (int i = 0; i < L; i++)
-	//{
-		//for (int j = 0; j < L; j++)
-		//{
-			m_map[1][1].left = 0 ;
-			m_map[1][1].right = 820;
-			m_map[1][1].top = 0 ;
-			m_map[1][1].bottom = 820;
-			//pdc->SelectObject(m_brush[3]);
-			pdc->FillRect(m_map[1][1], &m_brush[0]);
-		//}
-	//}
+	CBrush* poldBrs = pdc->SelectObject(&m_brush[0]);
+
+	m_map[1][1].left = 0;
+	m_map[1][1].right = 820;
+	m_map[1][1].top = 0;
+	m_map[1][1].bottom = 820;
+
+	pdc->FillRect(m_map[1][1], &m_brush[0]);
+
 	pdc->SelectObject(&poldBrs);
 	poldBrs->DeleteObject();
 	ReleaseDC(pdc);
@@ -184,15 +175,11 @@ void CMazeDlg::PrimGenerate()
 	// 停止计时
 	KillTimer(1);
 	m_timerFlag = FALSE;
-	
-	// 清空迷宫
-	for (int i = 0; i < L; i++) {
-		for (int j = 0; j < L; j++) {
-			Maze[i][j] = 0;
-		}
-	}
 
-	// 把整个迷宫内部都包围起来
+	//迷宫单元格全部设置为墙
+	memset(Maze, 0, sizeof(Maze));
+
+	//迷宫外围设置为边界
 	for (int i = 0; i < L; i++) {
 		Maze[i][0] = -1;
 		Maze[0][i] = -1;
@@ -200,15 +187,16 @@ void CMazeDlg::PrimGenerate()
 		Maze[i][L - 1] = -1;
 	}
 
+	// 设置迷宫入口
+	m_x = 0;
+	m_y = 1;
+
+
 	// 随机选择一个点作为起点
 	int x = 2 * (rand() % ((L / 2) - 1)) + 1;
 	int y = 2 * (rand() % ((L / 2) - 1)) + 1;
-	
-
-	// 设置迷宫入口
 	Maze[x][y] = 1;
-	m_x = 0;
-	m_y = 1;
+
 
 	// 设置迷宫出口
 	randPoint.first = L - 2;
@@ -281,10 +269,8 @@ void CMazeDlg::PrimGenerate()
 		}
 	}
 	
-
-	// 游戏区
+    // 迷宫初始化,绘制背景
 	CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
-	// 迷宫初始化,绘制背景
 	CBrush* poldBrs = pdc->SelectObject(&m_brush[3]);
 	for (int i = 0; i < 41; i++)
 	{
@@ -294,15 +280,11 @@ void CMazeDlg::PrimGenerate()
 			m_map[i][j].right = 20 + j * 20;
 			m_map[i][j].top = 0 + i * 20;
 			m_map[i][j].bottom = 20 + i * 20;
-			//pdc->SelectObject(m_brush[3]);
 			pdc->FillRect(m_map[i][j], &m_brush[3]);
-			//pdc->SelectObject(&poldBrs);
 		}
 	}
 	pdc->SelectObject(&poldBrs);
-	//ReleaseDC(pdc);
-
-
+	
 	//画迷宫
 	pdc->SelectObject(m_brush[2]);
 	for (int i = 0; i < L; i++)
@@ -320,23 +302,13 @@ void CMazeDlg::PrimGenerate()
 				m_map[i][j].right = 20 + j * 20;
 				m_map[i][j].top = 0 + i * 20;
 				m_map[i][j].bottom = 20 + i * 20;
-
-
-				//pdc->SelectObject(m_brush[2]);
 				pdc->FillRect(m_map[i][j],&m_brush[7]);
-				//pdc->SelectObject(&poldBrs);
-				//ReleaseDC(pdc);
-				
 				poldBrs->DeleteObject();
 			}
 		}
 	}
 
 	pdc->SelectObject(&poldBrs);
-
-	/*CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
-	CBrush* poldBrs = pdc->SelectObject(&m_brush[1]);*/
-
 
 	//画人物
 	pdc->SelectObject(&m_brush[5]);
@@ -372,13 +344,16 @@ void CMazeDlg::PrimGenerate(int random_point)
 	m_timerFlag = FALSE;
 
 
-	for (int i = 0; i < L; i++)
+	/*for (int i = 0; i < L; i++)
 	{
 		for (int j = 0; j < L; j++)
 		{
 			Maze[i][j] = 0;
 		}
-	}
+	}*/
+
+	//迷宫单元格全部设置为墙
+	memset(Maze, 0, sizeof(Maze));
 
 	//最外围设置为边界
 	for (int i = 0; i < L; i++)
@@ -808,30 +783,24 @@ void CMazeDlg::DfsSolve(int x, int y)
 		{
 			for (int j = 1; j < L; j++)
 			{
-				//CDC* pDC = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
 				if (pDC != nullptr)
 				{
 					if (BOOK[i][j] == 2)
 					{
-						//pDC->SelectObject(&m_brush[4]);
 						CRect rect(j * 20 + 1, i * 20 + 1, (j + 1) * 20 - 1, (i + 1) * 20 - 1);
 						pDC->FillRect(rect, &m_brush[4]);
-						//ReleaseDC(pDC);
 					}
 				}
 			}
 		}
 		ReleaseDC(pDC);
-		//如果是随机终点需要绘制完路径后重绘终点
-		//if (randGenerate == true)
-		//{
-			CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
-			CBrush* poldBrs = pdc->SelectObject(&m_brush[6]);
-			pdc->FillRect(m_map[randPoint.first][randPoint.second], &m_brush[6]);
-			pdc->SelectObject(&poldBrs);
-			poldBrs->DeleteObject();
-			ReleaseDC(pdc);
-		//}
+
+		CDC* pdc = GetDlgItem(IDC_MAZEPIC)->GetWindowDC();
+		CBrush* poldBrs = pdc->SelectObject(&m_brush[6]);
+		pdc->FillRect(m_map[randPoint.first][randPoint.second], &m_brush[6]);
+		pdc->SelectObject(&poldBrs);
+		poldBrs->DeleteObject();
+		ReleaseDC(pdc);
 
 		// 找到出口
 		MessageBox(_T("恭喜您，成功找到出口！"), _T("迷宫寻路成功"), MB_OK);
@@ -910,7 +879,7 @@ void CMazeDlg::movePlayer(int x, int y)//传入下一步的坐标
 		// 停止计时
 		KillTimer(1);
 		m_timerFlag = FALSE;
-		MessageBox(_T("恭喜你走出迷宫！！！"));
+		MessageBox(_T("恭喜你到达终点！！！"));
 		return;
 	}
 }
@@ -935,16 +904,30 @@ bool CMazeDlg::SaveMazeData()
 		s_minute = m_minute;
 		s_second = m_second;
 
-
-
-		ofs << "MAZE  " << sys.wYear << "/" <<
+		ofs << "MAZE  ";
+		if (randGenerate == false)
+		{
+			ofs << "游戏模式：固定终点" << "   ";
+		}
+		else if (randGenerate == true)
+		{
+			ofs << "游戏模式：随机终点" << "   ";
+		}
+		ofs << sys.wYear << "/" <<
 			sys.wMonth << "/" << sys.wDay << "  " << std::setfill('0') << std::setw(2) << sys.wHour
 			<< ":" << std::setfill('0') << std::setw(2)
 			<< sys.wMinute << ":" << std::setfill('0') << std::setw(2)
 			<< sys.wSecond << "   " << "所用步数：" << s_step << "    " << "所用时间：" <<
 			std::setw(2) << std::setfill('0') << s_minute << ":" <<
-			std::setw(2) << std::setfill('0') << s_second << std::endl;
-
+			std::setw(2) << std::setfill('0') << s_second << "   ";
+		if (m_x == randPoint.first && m_y == randPoint.second)
+		{
+			ofs << "成功走出迷宫" << std::endl;
+		}
+		else
+		{
+			ofs << "未能走出迷宫" << std::endl;
+		}
 		ofs.close();
 		return true;
 	}
@@ -960,11 +943,11 @@ void CMazeDlg::ShowMazeData()
 	// 打开文件
 	HINSTANCE hInstance = ShellExecute(NULL, L"open", file_name, NULL, NULL, SW_SHOWNORMAL);
 
-	if ((int)hInstance <= 32)
-	{
-		// 打开文件失败
-		MessageBox(NULL, L"打开文件失败！", MB_OK);
-	}
+	//if ((int)hInstance <= 32)
+	//{
+	//	// 打开文件失败
+	//	MessageBox(NULL, L"打开文件失败！", MB_OK);
+	//}
 }
 
 
@@ -1114,9 +1097,6 @@ BOOL CMazeDlg::PreTranslateMessage(MSG* pMsg)
 	// TODO: 在此添加专用代码和/或调用基类
 
 	//SendMessage(pMsg->message, pMsg->wParam);
-
-
-
 
 
 	if (pMsg->message == WM_KEYDOWN)
